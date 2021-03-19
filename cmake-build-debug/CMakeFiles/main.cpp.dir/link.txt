@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/main.cpp.dir/main.cpp_autogen/mocs_compilation.cpp.o CMakeFiles/main.cpp.dir/mainwindow.cpp.o  -o main.cpp 
