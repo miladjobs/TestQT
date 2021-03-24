@@ -8,7 +8,7 @@ set(CMAKE_AUTOUIC ON)
 
 set(QT_VERSION 5)
 set(REQUIRED_LIBS Core Widgets)
-set(REQUIRED_LIBS_QUALIFIED Qt${QT_VERSION}::Core Qt${QT_VERSION}::Widgets)
+set(REQUIRED_LIBS_QUALIFIED Qt${QT_VERSION}::Core Qt${QT_VERSION}::Widgets Qt${QT_VERSION}Sql)
 
 add_executable(${PROJECT_NAME} main.cpp mainwindow.cpp mainwindow.h)
 
