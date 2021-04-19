@@ -13,12 +13,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit->setPlaceholderText("localhost");
     ui->lineEdit_2->setPlaceholderText("testQt");
     ui->lineEdit_3->setPlaceholderText("miladjobs");
-    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::handleConnectPushButton);
+
+    myPlayer = new Player();
+    QObject::connect(myPlayer, SIGNAL(processedImage(QImage)),
+                     this, SLOT(updatePlayerUI(QImage)));
+    connect(ui->pushButton_3, &QPushButton::clicked, this, &MainWindow::handlePlayButton);
+    connect(ui->pushButton_4, &QPushButton::clicked, this, &MainWindow::handleLoadButton);
     connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::handleSubmitPushButton);
+    connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::handleConnectPushButton);
+    connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::handleVideoTabButton);
 }
 
 MainWindow::~MainWindow()
 {
+    delete myPlayer;
     delete ui;
 }
 
@@ -121,4 +129,45 @@ QVariant PersonModel::headerData(int section, Qt::Orientation orientation, int r
         }
     }
     return QVariant();
+}
+
+void MainWindow::updatePlayerUI(QImage img)
+{
+    if (!img.isNull())
+    {
+        ui->label_8->setAlignment(Qt::AlignCenter);
+        ui->label_8->setPixmap(QPixmap::fromImage(img).scaled(ui->label_8->size(), Qt::KeepAspectRatio, Qt::FastTransformation));
+    }
+}
+
+void MainWindow::handleLoadButton() {
+    QString filename = QFileDialog::getOpenFileName(this,
+                                                    tr("Open Video"), ".",
+                                                    tr("Video Files (*.avi *.mpg *.mp4)"));
+    if (!filename.isEmpty()){
+        if (!myPlayer->LoadVideo(filename))
+        {
+            QMessageBox msgBox;
+            msgBox.setText("The selected video could not be opened!");
+            msgBox.exec();
+        }
+    }
+}
+
+void MainWindow::handlePlayButton()
+{
+    if (myPlayer->IsStopped())
+    {
+        myPlayer->Play();
+        ui->pushButton_3->setText(tr("Stop"));
+    }else
+    {
+        myPlayer->Stop();
+        ui->pushButton_3->setText(tr("Play"));
+    }
+}
+
+void MainWindow::handleVideoTabButton()
+{
+    ui->tabWidget->setCurrentIndex(2);
 }

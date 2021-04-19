@@ -8,7 +8,9 @@
 #include <QErrorMessage>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
-
+#include <QMessageBox>
+#include <QFileDialog>
+#include "player.h"
 
 namespace Ui { class MainWindow;}
 
@@ -41,10 +43,15 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    Player* myPlayer;
 private slots:
     void handleConnectPushButton();
     void handleSubmitPushButton();
     void updateTable();
+    void updatePlayerUI(QImage img);
+    void handlePlayButton();
+    void handleLoadButton();
+    void handleVideoTabButton();
 
 private:
     QSqlDatabase db;
