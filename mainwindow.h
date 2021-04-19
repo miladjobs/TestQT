@@ -52,6 +52,7 @@ private slots:
     void handlePlayButton();
     void handleLoadButton();
     void handleVideoTabButton();
+    void handleBackButton();
 
 private:
     QSqlDatabase db;

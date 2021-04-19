@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->pushButton_2, &QPushButton::clicked, this, &MainWindow::handleSubmitPushButton);
     connect(ui->pushButton, &QPushButton::clicked, this, &MainWindow::handleConnectPushButton);
     connect(ui->pushButton_5, &QPushButton::clicked, this, &MainWindow::handleVideoTabButton);
+    connect(ui->pushButton_6, &QPushButton::clicked, this, &MainWindow::handleBackButton);
 }
 
 MainWindow::~MainWindow()
@@ -141,12 +142,22 @@ void MainWindow::updatePlayerUI(QImage img)
 }
 
 void MainWindow::handleLoadButton() {
-    QString filename = QFileDialog::getOpenFileName(this,
-                                                    tr("Open Video"), ".",
-                                                    tr("Video Files (*.avi *.mpg *.mp4)"));
-    if (!filename.isEmpty()){
-        if (!myPlayer->LoadVideo(filename))
-        {
+    if(ui->lineEdit_6->text().length() == 0)
+    {
+        QString filename = QFileDialog::getOpenFileName(this,
+                                                        tr("Open Video"), ".",
+                                                        tr("Video Files (*.avi *.mpg *.mp4)"));
+        if (!filename.isEmpty()) {
+            if (!myPlayer->LoadVideo(filename)) {
+                QMessageBox msgBox;
+                msgBox.setText("The selected video could not be opened!");
+                msgBox.exec();
+            }
+        }
+    }
+    else
+    {
+        if (!myPlayer->LoadVideo(ui->lineEdit_6->text())) {
             QMessageBox msgBox;
             msgBox.setText("The selected video could not be opened!");
             msgBox.exec();
@@ -170,4 +181,10 @@ void MainWindow::handlePlayButton()
 void MainWindow::handleVideoTabButton()
 {
     ui->tabWidget->setCurrentIndex(2);
+}
+
+void MainWindow::handleBackButton()
+{
+    ui->tabWidget->setCurrentIndex(0);
+    delete myPlayer;
 }
